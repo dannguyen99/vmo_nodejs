@@ -1,0 +1,4 @@
+## don't upload node modules
+/node_modules
+
+note.txt
