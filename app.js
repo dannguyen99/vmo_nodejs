@@ -1,17 +1,42 @@
-import express from 'express'
-import winston from 'winston'
-import dotenv from 'dotenv'
+import express from 'express';
+import winston from 'winston';
+import dotenv from 'dotenv';
+import projectType from './models/category/projectType.js';
 
 //use .env key
-dotenv.config()
+dotenv.config();
 
-const app=express()
+const app = express();
+app.use(express.json())
+
+const validate = (model, data) => {
+    const fields = projectType.schema.paths
+    const names = Object.keys(fields)
+    for (let index = 0; index < names.length - 2; index++) {
+        const name = names[index];
+        console.log(name, fields[name]['instance']);
+        if (!name in data) {
+            return false;
+        }
+        else{
+             dataField = data[name]
+        }
+    }
+}
 
 app.use(express.json())
 app.get('/', (req, res) => {
-    res.send('hello world')
+    const fields = projectType.schema.paths
+    const names = Object.keys(fields)
+    for (let index = 0; index < names.length - 2; index++) {
+        const name = names[index];
+        console.log(name, fields[name]['instance']);
+    }
+    res.send(projectType.schema.paths)
 })
 
-app.listen(3000, () =>
+const expressPort = process.env.PORT || 3000;
+
+app.listen(expressPort, () =>
     console.log('Example app listening on port 3000!'),
 );
