@@ -10,6 +10,6 @@ const customerGroupSchema = new Schema({
     updatedAt: Date
 });
 
-const customerGroup = mongoose.model("customerGroup", customerGroupSchema)
+const CustomerGroup = mongoose.model("CustomerGroup", customerGroupSchema)
 
-export default customerGroup
+export default CustomerGroup

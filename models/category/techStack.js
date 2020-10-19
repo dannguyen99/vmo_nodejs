@@ -9,6 +9,6 @@ const techStackSchema = new Schema({
     updatedAt: Date
 });
 
-const techStack = mongoose.model("techStack", techStackSchema)
+const TechStack = mongoose.model("TechStack", techStackSchema)
 
-export default techStack
+export default TechStack

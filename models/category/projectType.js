@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import mongoosePaginate from 'mongoose-paginate-v2';
 const { Schema } = mongoose;
 
 const projectTypeSchema = new Schema({
@@ -10,6 +11,8 @@ const projectTypeSchema = new Schema({
     updatedAt: Date
 });
 
-const projectType = mongoose.model("projectType", projectTypeSchema)
+projectTypeSchema.plugin(mongoosePaginate);
 
-export default projectType
+const ProjectType = mongoose.model("ProjectType", projectTypeSchema)
+
+export default ProjectType

@@ -9,6 +9,6 @@ const projectStatusSchema = new Schema({
     updatedAt: Date
 });
 
-const projectStatus = mongoose.model("projectStatus", projectStatusSchema)
+const ProjectStatus = mongoose.model("ProjectStatus", projectStatusSchema)
 
-export default projectStatus
+export default ProjectStatus

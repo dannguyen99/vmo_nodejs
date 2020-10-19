@@ -1,7 +1,11 @@
 import express from 'express';
-import winston from 'winston';
 import dotenv from 'dotenv';
-import projectType from './models/category/projectType.js';
+import mongoose from 'mongoose';
+import { jwtAuthenticate } from './middleware/jwtAuthenticate.js';
+import Admin from './models/admin.js';
+import autoGenerateToken from './helper/autoGenerateToken.js';
+import login from './routes/adminRoute.js'
+import projectTypeRoute from './routes/category/projectType/projectTypeRoute.js';
 
 //use .env key
 dotenv.config();
@@ -9,34 +13,29 @@ dotenv.config();
 const app = express();
 app.use(express.json())
 
-const validate = (model, data) => {
-    const fields = projectType.schema.paths
-    const names = Object.keys(fields)
-    for (let index = 0; index < names.length - 2; index++) {
-        const name = names[index];
-        console.log(name, fields[name]['instance']);
-        if (!name in data) {
-            return false;
-        }
-        else{
-             dataField = data[name]
-        }
-    }
-}
+app.post('/login', login)
 
-app.use(express.json())
-app.get('/', (req, res) => {
-    const fields = projectType.schema.paths
-    const names = Object.keys(fields)
-    for (let index = 0; index < names.length - 2; index++) {
-        const name = names[index];
-        console.log(name, fields[name]['instance']);
-    }
-    res.send(projectType.schema.paths)
-})
 
+app.use(jwtAuthenticate)
+
+app.use('/', projectTypeRoute)
+
+
+const DB_URI = 'mongodb://localhost:27017/vmo_nodejs'
 const expressPort = process.env.PORT || 3000;
+mongoose.Promise = global.Promise;
 
-app.listen(expressPort, () =>
-    console.log('Example app listening on port 3000!'),
-);
+mongoose.connect(DB_URI,
+    {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+        useCreateIndex: true,
+        useFindAndModify: false,
+    }).then(async () => {
+        const result = await Admin.find({});
+        if (result.length == 0)
+            autoGenerateToken()
+        app.listen(expressPort, () =>
+            console.log(`App is listening on port http://localhost:${expressPort}/`)
+        );
+    })
