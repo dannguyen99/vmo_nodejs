@@ -1,1 +1,4 @@
 {"message":"getByIdProjectTypeController CastError: Cast to ObjectId failed for value \"5f8d53cc22a8011df426d0\" at path \"_id\" for model \"ProjectType\"","level":"info","timestamp":"2020-10-20T07:57:00.118Z"}
+{"message":"createProjectStatusController ReferenceError: Cannot access 'ProjectStatus' before initialization","level":"info","timestamp":"2020-10-20T09:01:12.653Z"}
+{"message":"createProjectStatusController ReferenceError: Cannot access 'ProjectStatus' before initialization","level":"info","timestamp":"2020-10-20T09:02:39.718Z"}
+{"message":"createProjectStatusController ReferenceError: Cannot access 'ProjectStatus' before initialization","level":"info","timestamp":"2020-10-20T09:02:48.161Z"}

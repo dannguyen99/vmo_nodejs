@@ -6,7 +6,9 @@ import validObjectId from './middleware/validObjectId.js';
 import Admin from './models/admin.js';
 import autoGenerateToken from './helper/autoGenerateToken.js';
 import login from './routes/adminRoute.js'
-import projectTypeRoute from './routes/category/projectType/projectTypeRoute.js';
+import projectTypeRoute from './routes/category/projectTypeRoute.js';
+import projectStatusRoute from './routes/category/projectStatusRoute.js'
+import techStackRoute from './routes/category/techStackRoute.js'
 
 
 //use .env key
@@ -21,7 +23,7 @@ app.post('/login', login)
 app.use(jwtAuthenticate)
 app.use('/*/:id', validObjectId)
 
-app.use('/', projectTypeRoute)
+app.use('/', projectTypeRoute, projectStatusRoute, techStackRoute)
 
 const DB_URI = 'mongodb://localhost:27017/vmo_nodejs'
 const expressPort = process.env.PORT || 3000;

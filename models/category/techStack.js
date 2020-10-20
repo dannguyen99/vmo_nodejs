@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 const { Schema } = mongoose;
+import mongoosePaginate from 'mongoose-paginate-v2';
 
 const techStackSchema = new Schema({
     name: String,
@@ -9,6 +10,7 @@ const techStackSchema = new Schema({
     updatedAt: Date
 });
 
-const TechStack = mongoose.model("TechStack", techStackSchema)
+techStackSchema.plugin(mongoosePaginate);
+const TechStack = mongoose.model("TechStack", techStackSchema);
 
-export default TechStack
+export default TechStack;

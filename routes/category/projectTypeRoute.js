@@ -1,5 +1,5 @@
 import Router from 'express'
-import { createProjectType, getProjectTypeById, getProjectType, updateProjectTypeById, deleteProjectTypeById } from '../../../controller/category/projectType/projectTypeApi.js'
+import { createProjectType, getProjectTypeById, getProjectType, updateProjectTypeById, deleteProjectTypeById } from '../../controller/category/projectType/projectTypeApi.js'
 
 const router = Router();
 

@@ -51,12 +51,12 @@ export const get = async (options) => {
 
 export const updateById = async (id, data) => {
     try {
-        const projectType = await ProjectType.findById(id);
-        if (!projectType)
-            return response('No project type with given ID', 'PROJECTTYPE_NOT_EXIST', [], 400);
         data.updatedAt = Date.now()
-        await projectType.updateOne(data);
-        return response('Update project type success', 'UPDATE_PROJECTTYPE_SUCCESS', [], 200)
+        const result = await ProjectType.findByIdAndUpdate(id, data);
+        if (!result)
+            return response('No project type with given ID', 'PROJECTTYPE_NOT_EXIST', [], 400);
+        else
+            return response('Update project type success', 'UPDATE_PROJECTTYPE_SUCCESS', [], 200)
     } catch (error) {
         logger(`updateByIdProjectTypeController ${error}`)
         return response('Internal error', 'INTERNAL_SERVER_ERROR', [], 500);

@@ -10,7 +10,7 @@ export const response = (message, messageCode, data, status) => {
 export const failCreateResponse = (missingFields, wrongFields) => {
     if (missingFields.length !== 0) {
         const requiredField = missingFields[0];
-        return response(`${requiredField} is required`, `${requiredField}_IS_REQUIRED`, [], 400);
+        return response(`${requiredField} is required`, `${requiredField.toUpperCase()}_IS_REQUIRED`, [], 400);
     }
     else {
         const wrongField = wrongFields[0];
