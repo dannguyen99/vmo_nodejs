@@ -1,7 +1,8 @@
 import jwt from 'jsonwebtoken';
 import { response } from '../helper/response.js'
 
-export const jwtAuthenticate = (req, res, next) => {
+
+const jwtAuthenticate = (req, res, next) => {
     const authHeader = req.headers['authorization']
     const token = authHeader && authHeader.split(' ')[1]
     if (token == null)
@@ -11,3 +12,5 @@ export const jwtAuthenticate = (req, res, next) => {
         next()
     })
 }
+
+export default jwtAuthenticate

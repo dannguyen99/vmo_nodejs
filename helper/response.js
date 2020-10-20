@@ -21,3 +21,16 @@ export const failCreateResponse = (missingFields, wrongFields) => {
     }
 }
 
+export const failUpdateResponse = (wrongFields) => {
+    if (wrongFields.length === 0) {
+        return response('An update field is required', 'UPDATE_FIELD_IS_REQUIRED', [], 400);
+    }
+    else {
+        const wrongField = wrongFields[0];
+        console.log(wrongFields)
+        const fieldName = wrongField.fieldName;
+        const dataType = wrongField.dataType;
+        return response(`${fieldName.toUpperCase()}_IS_${dataType.toUpperCase()}`, `${fieldName} must be a ${dataType}`, [], 400);
+    }
+}
+

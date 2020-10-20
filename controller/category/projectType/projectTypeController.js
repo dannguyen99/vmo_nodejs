@@ -13,6 +13,7 @@ export const getById = async (id) => {
             return response('Get project type success', 'GET_PROJECTTYPE_SUCCESS', projectType, 200);
     } catch (error) {
         logger(`getByIdProjectTypeController ${error}`)
+        return response('Internal error', 'INTERNAL_SERVER_ERROR', [], 500);
     }
 }
 
@@ -35,17 +36,42 @@ export const create = async (data) => {
 }
 
 
-export const get = (options) => {
+export const get = async (options) => {
     try {
-        ProjectType.paginate({}, { offset: options.offset, limit: options.limit }, (err, result) => {
-            if (err) {
-                logger(`getProjectTypeController ${error}`)
-                return response('Internal error', 'INTERNAL_SERVER_ERROR', [], 500);
-            }
-            return result;
-        })
+        const offset = options.offset || 0;
+        const limit = options.limit || 10;
+        const sort = options.sort || 'id';
+        const result = await ProjectType.paginate({}, { offset: offset, limit: limit, sort: sort });
+        return response('GET project type success', 'GET_PROJECTTYPE_SUCCESS', result.docs, 200);
     } catch (error) {
         logger(`getProjectTypeController ${error}`)
         return response('Internal error', 'INTERNAL_SERVER_ERROR', [], 500);
     }
-} 
+}
+
+export const updateById = async (id, data) => {
+    try {
+        const projectType = await ProjectType.findById(id);
+        if (!projectType)
+            return response('No project type with given ID', 'PROJECTTYPE_NOT_EXIST', [], 400);
+        data.updatedAt = Date.now()
+        await projectType.updateOne(data);
+        return response('Update project type success', 'UPDATE_PROJECTTYPE_SUCCESS', [], 200)
+    } catch (error) {
+        logger(`updateByIdProjectTypeController ${error}`)
+        return response('Internal error', 'INTERNAL_SERVER_ERROR', [], 500);
+    }
+}
+
+export const deleteById = async (id) => {
+    try {
+        const result = await ProjectType.findByIdAndDelete(id);
+        if (!result)
+            return response('No project type with given ID', 'PROJECTTYPE_NOT_EXIST', [], 400);
+        else
+            return response('Delete project type success', 'DELETE_PROJECTTYPE_SUCCESS', [], 200)
+    } catch (error) {
+        logger(`deleteByIdProjectTypeController ${error}`)
+        return response('Internal error', 'INTERNAL_SERVER_ERROR', [], 500);
+    }
+}
