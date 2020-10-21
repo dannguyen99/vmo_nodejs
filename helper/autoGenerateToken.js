@@ -12,7 +12,9 @@ const autoGenerateToken = () => {
                 logger(`autoGenerateToken ${err}`)
             const admin = new Admin({
                 username: 'dannguyen',
-                password: hash
+                password: hash,
+                email: "dannguyen0801@gmail.com",
+                status: true
             })
             const result = await Admin.create(admin);
             const accessToken = jwt.sign(result.toObject(), process.env.ACCESS_TOKEN_SECRET)

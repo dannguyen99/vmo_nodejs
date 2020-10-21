@@ -14,7 +14,6 @@ export const failCreateResponse = (missingFields, wrongFields) => {
     }
     else {
         const wrongField = wrongFields[0];
-        console.log(wrongFields)
         const fieldName = wrongField.fieldName;
         const dataType = wrongField.dataType;
         return response(`${fieldName.toUpperCase()}_IS_${dataType.toUpperCase()}`, `${fieldName} must be a ${dataType}`, [], 400);

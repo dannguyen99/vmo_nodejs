@@ -12,7 +12,7 @@ export const createCustomerGroup = async (req, res) => {
     }
     else {
         const result = await create(data)
-        res.status(result.status).json(result);
+        return res.status(result.status).json(result);
     }
 }
 
@@ -37,12 +37,12 @@ export const updateCustomerGroupById = async (req, res) => {
     }
     else {
         const result = await updateById(id, data);
-        res.status(result.status).json(result);
+        return res.status(result.status).json(result);
     }
 }
 
 export const deleteCustomerGroupById = async (req, res) => {
     const id = req.params.id;
     const result = await deleteById(id);
-    res.status(result.status).json(result)
+    return res.status(result.status).json(result)
 }

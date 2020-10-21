@@ -1,11 +1,11 @@
-import { create, getById, get, updateById, deleteById } from './ProjectStatusController.js';
+import { create, getById, get, updateById, deleteById } from './EmployeeController.js';
 import { validateCreateRequest, validateUpdateRequest } from '../../../helper/validator.js';
-import ProjectStatus from '../../../models/category/projectStatus.js';
+import Employee from '../../../models/management/employee.js';
 import { failCreateResponse, failUpdateResponse } from '../../../helper/response.js'
 
-export const createProjectStatus = async (req, res) => {
+export const createEmployee = async (req, res) => {
     const data = req.body;
-    const [missingFields, wrongFields, success] = validateCreateRequest(ProjectStatus, data);
+    const [missingFields, wrongFields, success] = validateCreateRequest(Employee, data);
     if (!success) {
         const result = failCreateResponse(missingFields, wrongFields);
         return res.status(result.status).json(result);
@@ -16,21 +16,21 @@ export const createProjectStatus = async (req, res) => {
     }
 }
 
-export const getProjectStatusById = async (req, res) => {
+export const getEmployeeById = async (req, res) => {
     const result = await getById(req.params.id);
     return res.status(result.status).json(result);
 }
 
-export const getProjectStatus = async (req, res) => {
+export const getEmployee = async (req, res) => {
     const options = req.query;
     let result = await get(options);
     return res.status(200).json(result);
 }
 
-export const updateProjectStatusById = async (req, res) => {
+export const updateEmployeeById = async (req, res) => {
     const id = req.params.id;
     const data = req.body;
-    const [wrongFields, success] = validateUpdateRequest(ProjectStatus, data);
+    const [wrongFields, success] = validateUpdateRequest(Employee, data);
     if (!success) {
         const result = failUpdateResponse(wrongFields);
         return res.status(result.status).json(result);
@@ -41,7 +41,7 @@ export const updateProjectStatusById = async (req, res) => {
     }
 }
 
-export const deleteProjectStatusById = async (req, res) => {
+export const deleteEmployeeById = async (req, res) => {
     const id = req.params.id;
     const result = await deleteById(id);
     return res.status(result.status).json(result)
