@@ -1,0 +1,14 @@
+{"message":"getByIdEmployeeController ReferenceError: findById is not defined","level":"info","timestamp":"2020-10-22T03:15:10.737Z"}
+{"message":"getByIdEmployeeController TypeError: Assignment to constant variable.","level":"info","timestamp":"2020-10-22T03:15:37.088Z"}
+{"message":"createDepartmentController TypeError: Cannot read property 'length' of undefined","level":"info","timestamp":"2020-10-22T06:51:02.224Z"}
+{"message":"createDepartmentController TypeError: Cannot read property 'length' of undefined","level":"info","timestamp":"2020-10-22T06:54:59.194Z"}
+{"message":"createDepartmentController ReferenceError: Employee is not defined","level":"info","timestamp":"2020-10-22T06:58:36.729Z"}
+{"message":"createProjectController TypeError: Cannot read property 'length' of undefined","level":"info","timestamp":"2020-10-22T07:37:02.022Z"}
+{"message":"getProjectController CastError: Cast to ObjectId failed for value \"\" at path \"projectType\" for model \"Project\"","level":"info","timestamp":"2020-10-22T08:17:46.222Z"}
+{"message":"getProjectController CastError: Cast to ObjectId failed for value \"\" at path \"projectType\" for model \"Project\"","level":"info","timestamp":"2020-10-22T08:45:41.936Z"}
+{"message":"getProjectController CastError: Cast to ObjectId failed for value \"\" at path \"projectType\" for model \"Project\"","level":"info","timestamp":"2020-10-22T08:55:21.578Z"}
+{"message":"getProjectController CastError: Cast to ObjectId failed for value \"\" at path \"projectType\" for model \"Project\"","level":"info","timestamp":"2020-10-22T09:07:01.109Z"}
+{"message":"getProjectController CastError: Cast to ObjectId failed for value \"\" at path \"projectType\" for model \"Project\"","level":"info","timestamp":"2020-10-22T09:14:33.832Z"}
+{"message":"getProjectController CastError: Cast to ObjectId failed for value \"\" at path \"projectType\" for model \"Project\"","level":"info","timestamp":"2020-10-22T09:15:36.897Z"}
+{"message":"getProjectController CastError: Cast to ObjectId failed for value \"\" at path \"projectType\" for model \"Project\"","level":"info","timestamp":"2020-10-22T09:16:00.084Z"}
+{"message":"getProjectController CastError: Cast to ObjectId failed for value \"5f8d53cc22a8011df426d00e123213\" at path \"projectType\" for model \"Project\"","level":"info","timestamp":"2020-10-22T09:29:31.542Z"}

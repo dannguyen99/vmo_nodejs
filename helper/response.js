@@ -1,10 +1,12 @@
 export const response = (message, messageCode, data, status) => {
+    const messageCodeWords = messageCode.split(" ");
+    messageCode = messageCodeWords.join("_").toUpperCase();
     return {
         "message": message,
         "messageCode": messageCode,
         "data": data,
         "status": status
-    }
+    };
 }
 
 export const failCreateResponse = (missingFields, wrongFields) => {
@@ -16,7 +18,7 @@ export const failCreateResponse = (missingFields, wrongFields) => {
         const wrongField = wrongFields[0];
         const fieldName = wrongField.fieldName;
         const dataType = wrongField.dataType;
-        return response(`${fieldName.toUpperCase()}_IS_${dataType.toUpperCase()}`, `${fieldName} must be a ${dataType}`, [], 400);
+        return response(`${fieldName} is ${dataType}`, `${fieldName} must be a ${dataType}`, [], 400);
     }
 }
 
@@ -26,10 +28,9 @@ export const failUpdateResponse = (wrongFields) => {
     }
     else {
         const wrongField = wrongFields[0];
-        console.log(wrongFields)
         const fieldName = wrongField.fieldName;
         const dataType = wrongField.dataType;
-        return response(`${fieldName.toUpperCase()}_IS_${dataType.toUpperCase()}`, `${fieldName} must be a ${dataType}`, [], 400);
+        return response(`${fieldName} is ${dataType}`, `${fieldName} must be a ${dataType}`, [], 400);
     }
 }
 

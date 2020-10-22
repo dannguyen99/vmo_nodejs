@@ -6,13 +6,19 @@ import TechStack from '../../../models/category/techStack.js'
 import Project from '../../../models/management/project.js'
 
 
-export const getById = async (id) => {
+export const getById = async (id, isPopulate) => {
     try {
-        const employee = await Employee.findById(id)
+        let employee = await Employee.findById(id)
         if (!employee)
             return response('No employee with given ID', 'EMPLOYEE_NOT_EXIST', [], 400);
-        else
+        else {
+            if (isPopulate) {
+                employee = await Employee.findById(id)
+                    .populate('techStacks', ['name', 'description'])
+                    .populate('projects').exec()
+            }
             return response('Get employee success', 'GET_EMPLOYEE_SUCCESS', employee, 200);
+        }
     } catch (error) {
         logger(`getByIdEmployeeController ${error}`)
         return response('Internal error', 'INTERNAL_SERVER_ERROR', [], 500);
@@ -30,7 +36,7 @@ export const create = async (data) => {
             return response('Tech Stack does not exist in database', "TEXTSTACK_NOT_EXIST", [], 400);
         }
         if (! await validateIdInDatabase(Project, data.projects)) {
-            return response('project does not exist in database', "PROJECT_NOT_EXIST", [], 400);
+            return response('Project does not exist in database', "PROJECT_NOT_EXIST", [], 400);
         }
         data.createdAt = Date.now()
         data.updatedAt = Date.now()
@@ -60,6 +66,14 @@ export const get = async (options) => {
 export const updateById = async (id, data) => {
     try {
         data.updatedAt = Date.now()
+        if (data.techStacks) {
+            if (! await validateIdInDatabase(TechStack, data.techStacks))
+                return response('Tech Stack does not exist in database', "TEXTSTACK_NOT_EXIST", [], 400);
+        }
+        if (data.projects) {
+            if (! await validateIdInDatabase(Project, data.projects))
+                return response('Project does not exist in database', "PROJECT_NOT_EXIST", [], 400);
+        }
         const result = await Employee.findByIdAndUpdate(id, data);
         if (!result)
             return response('No employee with given ID', 'EMPLOYEE_NOT_EXIST', [], 400);
