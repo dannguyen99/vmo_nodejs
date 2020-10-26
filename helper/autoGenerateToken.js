@@ -8,8 +8,9 @@ const saltRounds = 10;
 const autoGenerateToken = () => {
     try {
         bcrypt.hash('admin', saltRounds, async (err, hash) => {
-            if (err)
+            if (err) {
                 logger(`autoGenerateToken ${err}`)
+            }
             const admin = new Admin({
                 username: 'dannguyen',
                 password: hash,

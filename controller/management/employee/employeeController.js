@@ -15,7 +15,8 @@ export const getById = async (id, isPopulate) => {
             if (isPopulate) {
                 employee = await Employee.findById(id)
                     .populate('techStacks', ['name', 'description'])
-                    .populate('projects').exec()
+                    .populate('projects', ['name', 'description'])
+                    .exec()
             }
             return response('Get employee success', 'GET_EMPLOYEE_SUCCESS', employee, 200);
         }
@@ -41,7 +42,9 @@ export const create = async (data) => {
         data.createdAt = Date.now()
         data.updatedAt = Date.now()
         const employee = await Employee.create(data);
-
+        for (const project_id of data.projects) {
+            await Project.findByIdAndUpdate(project_id, { '$addToSet': { employees: employee._id } });
+        }
         return response('Create employee success', 'CREATE_EMPLOYEE_SUCCESS', employee._id, 200);
     } catch (error) {
         logger(`createEmployeeController ${error}`)
@@ -55,7 +58,14 @@ export const get = async (options) => {
         const offset = options.offset || 0;
         const limit = options.limit || 10;
         const sort = options.sort || 'id';
-        const result = await Employee.paginate({}, { offset: offset, limit: limit, sort: sort });
+        let query = {};
+        if (options.techStack)
+            query.techStacks = options.techStack;
+        if (options.certificate)
+            query.certificate = options.certificate;
+        if (options.noProjects)
+            query.projects = { $size: options.noProjects };
+        const result = await Employee.paginate(query, { offset: offset, limit: limit, sort: sort });
         return response('GET employee success', 'GET_EMPLOYEE_SUCCESS', result.docs, 200);
     } catch (error) {
         logger(`getEmployeeController ${error}`)
@@ -77,8 +87,12 @@ export const updateById = async (id, data) => {
         const result = await Employee.findByIdAndUpdate(id, data);
         if (!result)
             return response('No employee with given ID', 'EMPLOYEE_NOT_EXIST', [], 400);
-        else
+        else {
+            for (const project_id of data.projects) {
+                await Project.findByIdAndUpdate(project_id, { '$addToSet': { employees: id } });
+            }
             return response('Update employee success', 'UPDATE_EMPLOYEE_SUCCESS', [], 200)
+        }
     } catch (error) {
         logger(`updateByIdEmployeeController ${error}`)
         return response('Internal error', 'INTERNAL_SERVER_ERROR', [], 500);

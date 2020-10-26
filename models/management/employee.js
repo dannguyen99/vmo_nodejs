@@ -24,6 +24,10 @@ const employeeSchema = new Schema({
 });
 
 employeeSchema.plugin(mongoosePaginate);
+
+employeeSchema.pre('remove', (next) => {
+    this.model('Project').remove({ employees: this._id }, next);
+})
 const Employee = mongoose.model("Employee", employeeSchema);
 
 export default Employee;

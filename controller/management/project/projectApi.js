@@ -26,7 +26,6 @@ export const getProject = async (req, res) => {
     const options = req.query;
     const [wrongFields, success] = validateGetQuery(options);
     if (!success) {
-
         const result = failUpdateResponse(wrongFields);
         return res.status(result.status).json(result);
     }

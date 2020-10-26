@@ -1,10 +1,12 @@
 import { logger } from '../../../helper/logger.js';
 import { response } from '../../../helper/response.js';
 import { validateIdInDatabase } from '../../../helper/validator.js';
-import TechStack from '../../../models/category/techStack.js'
+import TechStack from '../../../models/category/techStack.js';
 import Employee from '../../../models/management/employee.js';
-import Project from '../../../models/management/project.js'
-
+import Project from '../../../models/management/project.js';
+import ProjectType from '../../../models/category/projectType.js';
+import ProjectStatus from '../../../models/category/projectStatus.js';
+import Department from '../../../models/management/department.js'
 
 export const getById = async (id, isPopulate) => {
     try {
@@ -15,7 +17,11 @@ export const getById = async (id, isPopulate) => {
             if (isPopulate) {
                 project = await Project.findById(id)
                     .populate('techStacks', ['name', 'description'])
-                    .populate('employees', ['name', 'identityNumber']).exec()
+                    .populate('employees', ['name', 'identityNumber'])
+                    .populate('projectType', 'name')
+                    .populate('projectStatus', 'name')
+                    .populate('department', ['name', 'description'])
+                    .exec()
             }
             return response('Get project success', 'GET_PROJECT_SUCCESS', project, 200);
         }
@@ -33,14 +39,27 @@ export const create = async (data) => {
             return response('Project already exist', 'CREATE_PROJECT_FAIL', [], 409);
 
         if (! await validateIdInDatabase(TechStack, data.techStacks))
-            return response('Tech Stack does not exist in database', "TEXTSTACK_NOT_EXIST", [], 400);
+            return response('Tech Stack does not exist in database', "TEXTSTACK_NOT_EXIST", [], 404);
         if (! await validateIdInDatabase(Employee, data.employees))
-            return response('Employee does not exist in database', "EMPLOYEE_NOT_EXIST", [], 400);
-
+            return response('Employee does not exist in database', "EMPLOYEE_NOT_EXIST", [], 404);
+        if (! await validateIdInDatabase(ProjectType, [data.projectType]))
+            return response('ProjectType does not exist in database', "PROJECTTYPE_NOT_EXIST", [], 404);
+        if (! await validateIdInDatabase(ProjectStatus, [data.projectStatus]))
+            return response('Project Status does not exist in database', "PROJECTSTATUS_NOT_EXIST", [], 404);
+        if (! await validateIdInDatabase(Department, [data.department]))
+            return response('Department does not exist in database', "DEPARTMENT_NOT_EXIST", [], 404);
         data.createdAt = Date.now()
         data.updatedAt = Date.now()
         const project = await Project.create(data);
-
+        for (const employee_id of data.employees) {
+            await Employee.findByIdAndUpdate(employee_id, { '$addToSet': { projects: project._id } });
+        }
+        await Department.findByIdAndUpdate(data.department, {
+            $addToSet: {
+                projects: project._id,
+                employees: { $each: data.employees }
+            }
+        })
         return response('Create project success', 'CREATE_PROJECT_SUCCESS', project._id, 200);
     } catch (error) {
         logger(`createProjectController ${error}`)

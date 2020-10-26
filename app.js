@@ -33,6 +33,7 @@ app.post('/login', login)
 
 
 app.use(jwtAuthenticate)
+
 app.use('/*/:id', validObjectId)
 
 app.use('/', projectTypeRoute, projectStatusRoute, techStackRoute, customerGroupRoute, employeeRoute, projectRoute, departmentRoute);
